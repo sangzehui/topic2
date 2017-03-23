@@ -4,10 +4,11 @@ package com.sang.topic.common.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties(value={"password", "roleId", "available"})
+@JsonIgnoreProperties(value={"password", "roleId"})
 public class User {
     @Id
     @GeneratedValue
@@ -28,6 +29,17 @@ public class User {
     private Integer roleId;
 
     private Integer available;
+
+    @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'")
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public Integer getId() {
         return id;

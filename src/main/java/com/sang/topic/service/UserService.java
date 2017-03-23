@@ -1,10 +1,21 @@
 package com.sang.topic.service;
 
 
-import com.sang.topic.common.model.Result;
+import com.sang.topic.common.entity.User;
+import com.sang.topic.common.exception.ResultException;
+
+import java.util.List;
 
 public interface UserService {
-    Result register(String username, String password);
+    User register(String username, String password) throws ResultException;
 
-    Result login(String username, String password);
+    User login(String username, String password) throws ResultException;
+
+    User add(User user);
+
+    User getByUsername(String username);
+
+    List<User> getAll();
+
+    long getCount();
 }

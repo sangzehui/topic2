@@ -19,30 +19,28 @@ public class LoginController {
     @PostMapping("/register")
     public Result register(HttpServletRequest request, String username, String password) {
         try {
-            Result result = userService.register(username, password);
-            if(result.success()) {
-                result.add("jsessionid",request.getSession().getId());
-                SessionUtil.addUser(request, (User) result.get("user"));
-            }
+            User user = userService.register(username, password);
+            Result result = Result.success();
+            result.add("user", user);
+            result.add("jsessionid",request.getSession().getId());
+            SessionUtil.addUser(request, (User) result.get("user"));
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail(e.getMessage());
+            return Result.exception(e);
         }
     }
 
     @GetMapping("/login")
     public Result login(HttpServletRequest request, String username, String password) {
         try {
-            Result result = userService.login(username, password);
-            if(result.success()) {
-                result.add("jsessionid",request.getSession().getId());
-                SessionUtil.addUser(request, (User) result.get("user"));
-            }
+            User user = userService.login(username, password);
+            Result result = Result.success();
+            result.add("user", user);
+            result.add("jsessionid",request.getSession().getId());
+            SessionUtil.addUser(request, (User) result.get("user"));
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail(e.getMessage());
+            return Result.exception(e);
         }
     }
 }

@@ -1,12 +1,21 @@
 package com.sang.topic.service;
 
 
+import com.sang.topic.common.entity.Post;
 import com.sang.topic.common.entity.User;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Page;
-import com.sang.topic.common.model.Result;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface PostService {
-    Result getByTopicId(Integer topicId, Page page);
+    List<Post> getByTopicId(Integer topicId, Page page);
 
-    Result add(String title, String content, Integer TopicId, User user);
+    Post get(Integer id) throws ResultException;
+
+    Post add(String title, String content, Integer TopicId, User user) throws ResultException;
+
+    @Transactional
+    Post save(Post post);
 }

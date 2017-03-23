@@ -1,7 +1,10 @@
 package com.sang.topic.service.impl;
 
 
+import com.sang.topic.common.constants.MessageConstants;
+import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Topic;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.dao.TopicRepository;
 import com.sang.topic.service.TopicService;
@@ -16,10 +19,19 @@ public class TopicServiceImpl implements TopicService {
 
     @Transactional
     @Override
-    public Result add(String name) {
+    public Topic add(String name) {
         Topic topic = new Topic();
         topic.setName(name);
+        topic.setAvailable(1);
         topicRepository.save(topic);
-        return Result.success("").add("topic", topic);
+        return topic;
+    }
+
+    @Override
+    public Topic get(Integer id) throws ResultException {
+        Topic topic = topicRepository.findOne(id);
+        if(topic == null)
+            throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
+        return topic;
     }
 }

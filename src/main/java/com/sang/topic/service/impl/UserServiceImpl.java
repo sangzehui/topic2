@@ -3,13 +3,17 @@ package com.sang.topic.service.impl;
 
 import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.entity.User;
-import com.sang.topic.common.model.Result;
+import com.sang.topic.common.exception.ResultException;
+import com.sang.topic.common.model.Page;
 import com.sang.topic.dao.UserRepository;
 import com.sang.topic.service.UserService;
 import com.sang.topic.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,22 +22,47 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Result register(String username, String password) {
+    public User add(User user){
+        if(user.getRoleId() == null)
+            user.setRoleId(3);
+        if(user.getAvailable() == null)
+            user.setAvailable(1);
+        user.setCreateTime(new Date());
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public User register(String username, String password) throws ResultException {
         if (userRepository.findByUsername(username) != null)
-            return Result.fail(MessageConstants.USER_CREATE_REPEAT);
+            throw new ResultException(MessageConstants.USER_CREATE_REPEAT);
         User user = new User();
         user.setUsername(username);
         user.setPassword(SecurityUtil.encryptPassword(password));
-        userRepository.save(user);
-        return Result.success("").add("user", user);
+        return this.add(user);
     }
 
     @Override
-    public Result login(String username, String password) {
+    public User login(String username, String password) throws ResultException {
         User user = userRepository.findByUsernameAndPassword(username,
                 SecurityUtil.encryptPassword(password));
         if (user == null)
-            return Result.fail(MessageConstants.USER_LOGIN_FAIL);
-        return Result.success("").add("user", user);
+            throw new ResultException(MessageConstants.USER_LOGIN_FAIL);
+        return user;
+    }
+
+    @Override
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> getAll() {
+        return (List<User>) userRepository.findAll(new Page().toPageable());
+    }
+
+    @Override
+    public long getCount() {
+        return userRepository.count();
     }
 }

@@ -1,11 +1,15 @@
 package com.sang.topic.controller;
 
+import com.sang.topic.common.entity.Post;
+import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.model.Page;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.service.PostService;
 import com.sang.topic.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -17,22 +21,35 @@ public class TopicController {
     PostService postService;
 
     @GetMapping("/{topicId}")
-    public Result getByPage(Page page, @PathVariable("topicId") Integer topicId) {
+    public Result get(@PathVariable Integer topicId) {
         try {
-            return postService.getByTopicId(topicId, page);
+            Topic topic = topicService.get(topicId);
+            return Result.success().add("topic", topic);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail(e.getMessage());
+            return Result.exception(e);
+        }
+    }
+
+    @GetMapping("/{topicId}/p")
+    public Result getPosts(@PathVariable Integer topicId, Page page) {
+        try {
+            List<Post> posts = postService.getByTopicId(topicId, page);
+            return Result.success()
+                    .add("posts", posts)
+                    .add("page", page);
+        } catch (Exception e) {
+            return Result.exception(e);
         }
     }
 
     @PostMapping("")
     public Result add(String name) {
         try {
-            return topicService.add(name);
+            Topic topic = topicService.add(name);
+            return Result.success().add("topic", topic);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Result.fail(e.getMessage());
+            return Result.exception(e);
         }
     }
+
 }

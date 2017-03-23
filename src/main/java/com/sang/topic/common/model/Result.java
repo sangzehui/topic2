@@ -1,6 +1,8 @@
 package com.sang.topic.common.model;
 
+import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
+import com.sang.topic.common.exception.ResultException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,14 +15,13 @@ public class Result {
     private Result() {
     }
 
-    public boolean success(){
+    public boolean ok() {
         return getStatus().equals(ResultConstants.SUCCESS);
     }
 
-    public static Result success(String message) {
+    public static Result success() {
         Result result = new Result();
         result.setStatus(ResultConstants.SUCCESS);
-        result.setMessage(message);
         return result;
     }
 
@@ -31,14 +32,26 @@ public class Result {
         return result;
     }
 
+    public static Result exception(Exception e) {
+        if(e instanceof ResultException){
+            ResultException e2 = (ResultException) e;
+            Result r = Result.fail(e2.getMsg());
+            r.setStatus(e2.getStatus());
+            return r;
+        }else{
+            e.printStackTrace();
+            return Result.fail(MessageConstants.SYSTEM_EXCEPTION);
+        }
+    }
+
     public Result add(String name, Object value) {
-        if(data == null)
+        if (data == null)
             data = new HashMap<>();
         data.put(name, value);
         return this;
     }
 
-    public Object get(String name){
+    public Object get(String name) {
         return getData().get(name);
     }
 

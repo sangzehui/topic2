@@ -2,10 +2,11 @@ package com.sang.topic.service.impl;
 
 
 import com.sang.topic.common.constants.MessageConstants;
+import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Post;
 import com.sang.topic.common.entity.User;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Page;
-import com.sang.topic.common.model.Result;
 import com.sang.topic.dao.PostRepository;
 import com.sang.topic.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +22,40 @@ public class PostServiceImpl implements PostService {
     PostRepository postRepository;
 
     @Override
-    public Result getByTopicId(Integer topicId, Page page) {
-        List<Post> list = postRepository.findByTopicId(topicId, page.toPageReq());
-        return Result.success("").add("posts", list).add("page", page);
+    public List<Post> getByTopicId(Integer topicId, Page page) {
+        List<Post> list = postRepository.findByTopicId(topicId, page.toPageable());
+        return list;
+    }
+
+    @Override
+    public Post get(Integer id) throws ResultException {
+        Post post = postRepository.findOne(id);
+        if (post == null)
+            throw new ResultException(MessageConstants.POST_NOT_FOUND, ResultConstants.NOT_FOUND);
+        return post;
     }
 
     @Transactional
     @Override
-    public Result add(String title, String content, Integer topicId, User user) {
-        if(user == null)
-            return Result.fail(MessageConstants.USER_LOGIN_REQUIRE);
+    public Post add(String title, String content, Integer topicId, User user) throws ResultException {
+        if (user == null)
+            throw new ResultException(MessageConstants.USER_LOGIN_REQUIRE);
         Post post = new Post();
         post.setTitle(title);
         post.setContent(content);
         post.setTopicId(topicId);
+        post.setAvailable(1);
+        post.setCommentNumber(0);
         post.setUserId(user.getId());
         post.setUsername(user.getUsername());
         post.setCreateTime(new Date());
         postRepository.save(post);
-        return Result.success("").add("post", post);
+        return post;
+    }
+
+    @Transactional
+    @Override
+    public Post save(Post post) {
+        return postRepository.save(post);
     }
 }

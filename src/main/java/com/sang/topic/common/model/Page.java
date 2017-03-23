@@ -2,20 +2,18 @@ package com.sang.topic.common.model;
 
 import org.springframework.data.domain.PageRequest;
 
-/**
- * Created by sh on 2017/3/19.
- */
 public class Page {
     private Integer page;
     private Integer pageSize;
-    private Integer maxSize = 20;
+    private static final Integer FIRST_PAGE = 0;
+    private static final Integer MAX_SIZE = 20;
 
-    public PageRequest toPageReq() {
+    public PageRequest toPageable() {
         return new PageRequest(getPage(), getPageSize());
     }
 
     public Integer getPage() {
-        return page == null ? 0 : page;
+        return page == null ? FIRST_PAGE : page;
     }
 
     public void setPage(Integer page) {
@@ -23,7 +21,7 @@ public class Page {
     }
 
     public Integer getPageSize() {
-        return (pageSize == null || pageSize > maxSize) ? maxSize : pageSize;
+        return (pageSize == null || pageSize > MAX_SIZE) ? MAX_SIZE : pageSize;
     }
 
     public void setPageSize(Integer pageSize) {
