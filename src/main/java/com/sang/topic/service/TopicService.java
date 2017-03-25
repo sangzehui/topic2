@@ -3,9 +3,18 @@ package com.sang.topic.service;
 
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface TopicService {
-    Topic add(String name);
+    List<Topic> getByLevel(Integer level);
+
+    Topic add(String name, Integer parentId) throws ResultException;
+
+    Topic add(String name) throws ResultException;
 
     Topic get(Integer id) throws ResultException;
+
+    List<Topic> getChildren(Integer id) throws ResultException;
 }

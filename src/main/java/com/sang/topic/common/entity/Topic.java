@@ -17,6 +17,26 @@ public class Topic {
 
     private Integer available;
 
+    private Integer level;
+
+    private Integer parentId;
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public Integer getId() {
         return id;
     }

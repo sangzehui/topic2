@@ -24,7 +24,9 @@ public class TopicController {
     public Result get(@PathVariable Integer topicId) {
         try {
             Topic topic = topicService.get(topicId);
-            return Result.success().add("topic", topic);
+            List<Topic> topics = topicService.getChildren(topicId);
+            return Result.success().add("topic", topic)
+                    .add("childTopics", topics);
         } catch (Exception e) {
             return Result.exception(e);
         }
@@ -42,6 +44,16 @@ public class TopicController {
         }
     }
 
+    @GetMapping("/l/{level}")
+    public Result getByLevel(@PathVariable Integer level) {
+        try {
+            List<Topic> topics = topicService.getByLevel(level);
+            return Result.success().add("topics", topics);
+        } catch (Exception e){
+           return Result.exception(e);
+        }
+    }
+
     @PostMapping("")
     public Result add(String name) {
         try {
@@ -51,5 +63,4 @@ public class TopicController {
             return Result.exception(e);
         }
     }
-
 }

@@ -42,7 +42,8 @@ public class DataInitialize implements InitializingBean {
             user.setRoleId(1);
             userService.add(user);
 
-            Topic topic = topicService.add("话题");
+            Topic t = topicService.add("话题");
+            Topic topic = topicService.add("主页", t.getId());
 
             Post post = postService.add("第一篇文章标题", "第一篇文章内容", topic.getId(), user);
 
