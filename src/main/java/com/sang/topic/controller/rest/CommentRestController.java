@@ -1,4 +1,4 @@
-package com.sang.topic.controller;
+package com.sang.topic.controller.rest;
 
 import com.sang.topic.common.entity.Comment;
 import com.sang.topic.common.model.Result;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/c")
-public class CommentController {
+@RequestMapping("/rest/c")
+public class CommentRestController {
     @Autowired
     CommentService commentService;
 

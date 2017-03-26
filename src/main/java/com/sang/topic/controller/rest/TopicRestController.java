@@ -1,4 +1,4 @@
-package com.sang.topic.controller;
+package com.sang.topic.controller.rest;
 
 import com.sang.topic.common.entity.Post;
 import com.sang.topic.common.entity.Topic;
@@ -13,8 +13,8 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/t")
-public class TopicController {
+@RequestMapping("/rest/t")
+public class TopicRestController {
     @Autowired
     TopicService topicService;
     @Autowired

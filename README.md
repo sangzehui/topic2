@@ -1,2 +1,2 @@
 # topic2
-使用Spring boot开发的简易论坛
+使用Spring boot + freemarker开发的论坛

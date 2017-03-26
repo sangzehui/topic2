@@ -1,4 +1,4 @@
-package com.sang.topic.controller;
+package com.sang.topic.controller.rest;
 
 import com.sang.topic.common.entity.Comment;
 import com.sang.topic.common.entity.Post;
@@ -15,8 +15,8 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/p")
-public class PostController {
+@RequestMapping("/rest/p")
+public class PostRestController {
     @Autowired
     PostService postService;
     @Autowired
