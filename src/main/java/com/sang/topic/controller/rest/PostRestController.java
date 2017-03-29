@@ -7,10 +7,10 @@ import com.sang.topic.common.model.Result;
 import com.sang.topic.service.CommentService;
 import com.sang.topic.util.SessionUtil;
 import com.sang.topic.service.PostService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 

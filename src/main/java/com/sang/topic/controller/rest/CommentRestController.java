@@ -4,10 +4,10 @@ import com.sang.topic.common.entity.Comment;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.service.CommentService;
 import com.sang.topic.util.SessionUtil;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 @RestController

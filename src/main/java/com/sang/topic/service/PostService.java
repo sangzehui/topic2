@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface PostService {
+    List<Post> getAll(Page page);
+
     List<Post> getByTopicId(Integer topicId, Page page);
 
     Post get(Integer id) throws ResultException;

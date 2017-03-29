@@ -5,23 +5,31 @@ import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
-import com.sang.topic.common.model.Result;
 import com.sang.topic.dao.TopicRepository;
 import com.sang.topic.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class TopicServiceImpl implements TopicService {
     @Autowired
     TopicRepository topicRepository;
+    @Autowired
+    private EntityManager em;
 
     @Override
-    public List<Topic> getByLevel(Integer level) {
-        return topicRepository.findByLevel(level);
+    public List<Topic> getFirstLevel() {
+        return topicRepository.findByLevel(1);
+    }
+
+    @Override
+    public List<Topic> getSecondLevel() {
+        return topicRepository.findByLevel(2);
     }
 
     @Transactional
@@ -33,7 +41,7 @@ public class TopicServiceImpl implements TopicService {
         topic.setParentId(parentId);
         if (parentId != 0) {
             Topic parent = topicRepository.findOne(parentId);
-            if(parent == null)
+            if (parent == null)
                 throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
             topic.setLevel(parent.getLevel() + 1);
         } else {
@@ -60,6 +68,18 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> getChildren(Integer id) throws ResultException {
         List<Topic> list = topicRepository.findByParentId(id);
+        return list;
+    }
+
+    @Override
+    public List<Topic> getBrother(Integer id) throws ResultException {
+        Topic topic = topicRepository.findOne(id);
+        if (topic == null)
+            throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
+        Topic parentTopic = topicRepository.findOne(topic.getParentId());
+        if (parentTopic == null)
+            return new ArrayList<>();
+        List<Topic> list = topicRepository.findByParentId(parentTopic.getId());
         return list;
     }
 }

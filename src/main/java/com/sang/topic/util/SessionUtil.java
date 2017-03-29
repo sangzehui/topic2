@@ -1,7 +1,8 @@
 package com.sang.topic.util;
 
 import com.sang.topic.common.entity.User;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by sh on 2017/3/19.

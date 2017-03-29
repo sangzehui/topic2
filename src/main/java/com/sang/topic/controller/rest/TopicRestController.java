@@ -44,16 +44,6 @@ public class TopicRestController {
         }
     }
 
-    @GetMapping("/l/{level}")
-    public Result getByLevel(@PathVariable Integer level) {
-        try {
-            List<Topic> topics = topicService.getByLevel(level);
-            return Result.success().add("topics", topics);
-        } catch (Exception e){
-           return Result.exception(e);
-        }
-    }
-
     @PostMapping("")
     public Result add(String name) {
         try {

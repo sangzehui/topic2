@@ -1,8 +1,9 @@
-package com.sang.topic.component;
+package com.sang.topic.controller.init;
 
 import com.sang.topic.common.entity.Post;
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.entity.User;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.service.CommentService;
 import com.sang.topic.service.PostService;
 import com.sang.topic.service.TopicService;
@@ -12,6 +13,10 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * 初始化条件  数据库中用户表为空
@@ -42,15 +47,28 @@ public class DataInitialize implements InitializingBean {
             user.setRoleId(1);
             userService.add(user);
 
-            Topic t = topicService.add("话题");
-            Topic topic = topicService.add("主页", t.getId());
+            Topic topic = topicService.add("Topic");
 
-            Post post = postService.add("第一篇文章标题", "第一篇文章内容", topic.getId(), user);
-
-            for (int i = 1; i <= 21; i++) {
-                commentService.add("评论" + i, post.getId(), user);
+            List<String> list = Arrays.asList("闲聊", "技术", "游戏");
+            for (String name : list) {
+                new Thread(() -> {
+                    try {
+                        Topic t = topicService.add(name, topic.getId());
+                        Random random = new Random(System.currentTimeMillis());
+                        for (int i = 1; i <= 21; i++) {
+                            Post post = postService.add("第" + i + "篇[" + t.getName() + "]文章",
+                                    "第" + i + "篇[" + t.getName() + "]文章内容", t.getId(), user);
+                            int n = random.nextInt(i) + 5;
+                            for (int j = 1; j <= n; j++) {
+                                commentService.add("评论" + j, post.getId(), user);
+                            }
+                            logger.info("Data init success!");
+                        }
+                    } catch (ResultException e) {
+                        e.printStackTrace();
+                    }
+                }).start();
             }
-            logger.info("Data init success!");
         }
     }
 }

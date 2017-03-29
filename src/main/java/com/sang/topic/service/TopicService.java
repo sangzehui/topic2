@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface TopicService {
-    List<Topic> getByLevel(Integer level);
+    List<Topic> getFirstLevel();
+
+    List<Topic> getSecondLevel();
 
     Topic add(String name, Integer parentId) throws ResultException;
 
@@ -17,4 +19,6 @@ public interface TopicService {
     Topic get(Integer id) throws ResultException;
 
     List<Topic> getChildren(Integer id) throws ResultException;
+
+    List<Topic> getBrother(Integer id) throws ResultException;
 }

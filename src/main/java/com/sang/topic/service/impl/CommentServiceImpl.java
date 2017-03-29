@@ -25,7 +25,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getByPostIdAndPage(Integer topicId, Page page) {
-        return commentRepository.findByPostId(topicId, page.toPageable());
+        org.springframework.data.domain.Page<Comment> p = commentRepository.findByPostId(topicId, page.toPageable());
+        page.setCount(p.getTotalElements());
+        return p.getContent();
     }
 
     @Transactional

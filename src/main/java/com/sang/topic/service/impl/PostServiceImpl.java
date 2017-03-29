@@ -22,9 +22,17 @@ public class PostServiceImpl implements PostService {
     PostRepository postRepository;
 
     @Override
+    public List<Post> getAll(Page page) {
+        org.springframework.data.domain.Page<Post> p = postRepository.findAll(page.toPageable());
+        page.setCount(p.getTotalElements());
+        return p.getContent();
+    }
+
+    @Override
     public List<Post> getByTopicId(Integer topicId, Page page) {
-        List<Post> list = postRepository.findByTopicId(topicId, page.toPageable());
-        return list;
+        org.springframework.data.domain.Page<Post> p = postRepository.findByTopicId(topicId, page.toPageable());
+        page.setCount(p.getTotalElements());
+        return p.getContent();
     }
 
     @Override
