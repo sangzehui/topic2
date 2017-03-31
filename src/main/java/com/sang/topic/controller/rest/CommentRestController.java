@@ -1,6 +1,7 @@
 package com.sang.topic.controller.rest;
 
 import com.sang.topic.common.entity.Comment;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.service.CommentService;
 import com.sang.topic.util.SessionUtil;
@@ -17,12 +18,8 @@ public class CommentRestController {
     CommentService commentService;
 
     @PostMapping("")
-    public Result add(HttpServletRequest request, Integer postId, String content) {
-        try {
-            Comment comment = commentService.add(content, postId, SessionUtil.getUser(request));
-            return Result.success().add("comment", comment);
-        } catch (Exception e) {
-            return Result.exception(e);
-        }
+    public Result add(HttpServletRequest request, Integer postId, String content) throws ResultException {
+        Comment comment = commentService.add(content, postId, SessionUtil.getUser(request));
+        return Result.success().add("comment", comment);
     }
 }

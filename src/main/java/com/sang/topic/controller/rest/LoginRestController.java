@@ -1,6 +1,7 @@
 package com.sang.topic.controller.rest;
 
 import com.sang.topic.common.entity.User;
+import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.util.SessionUtil;
 import com.sang.topic.service.UserService;
@@ -20,12 +21,22 @@ public class LoginRestController {
     UserService userService;
 
     @PostMapping("/register")
-    public Result register(HttpServletRequest request, String username, String password) {
+    public Result register(HttpServletRequest request, String username, String password) throws ResultException {
+        User user = userService.register(username, password);
+        Result result = Result.success();
+        result.add("user", user);
+        result.add("jsessionid", request.getSession().getId());
+        SessionUtil.addUser(request, (User) result.get("user"));
+        return result;
+    }
+
+    @PostMapping("/login")
+    public Result login(HttpServletRequest request, String username, String password) {
         try {
-            User user = userService.register(username, password);
+            User user = userService.login(username, password);
             Result result = Result.success();
             result.add("user", user);
-            result.add("jsessionid",request.getSession().getId());
+            result.add("jsessionid", request.getSession().getId());
             SessionUtil.addUser(request, (User) result.get("user"));
             return result;
         } catch (Exception e) {
@@ -33,15 +44,11 @@ public class LoginRestController {
         }
     }
 
-    @GetMapping("/login")
-    public Result login(HttpServletRequest request, String username, String password) {
+    @PostMapping("/logout")
+    public Result logout(HttpServletRequest request) {
         try {
-            User user = userService.login(username, password);
-            Result result = Result.success();
-            result.add("user", user);
-            result.add("jsessionid",request.getSession().getId());
-            SessionUtil.addUser(request, (User) result.get("user"));
-            return result;
+            SessionUtil.removeUser(request);
+            return Result.success();
         } catch (Exception e) {
             return Result.exception(e);
         }

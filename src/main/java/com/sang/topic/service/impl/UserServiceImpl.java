@@ -2,6 +2,7 @@ package com.sang.topic.service.impl;
 
 
 import com.sang.topic.common.constants.MessageConstants;
+import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.User;
 import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Page;
@@ -48,6 +49,14 @@ public class UserServiceImpl implements UserService {
                 SecurityUtil.encryptPassword(password));
         if (user == null)
             throw new ResultException(MessageConstants.USER_LOGIN_FAIL);
+        return user;
+    }
+
+    @Override
+    public User get(Integer id) throws ResultException {
+        User user = userRepository.findOne(id);
+        if(user == null)
+            throw new ResultException(MessageConstants.USER_NOT_FOUND, ResultConstants.NOT_FOUND);
         return user;
     }
 

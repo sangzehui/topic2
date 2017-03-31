@@ -55,11 +55,11 @@ public class DataInitialize implements InitializingBean {
                     try {
                         Topic t = topicService.add(name, topic.getId());
                         Random random = new Random(System.currentTimeMillis());
-                        for (int i = 1; i <= 21; i++) {
+                        int n = random.nextInt(6) + 1;
+                        for (int i = 1; i <= n; i++) {
                             Post post = postService.add("第" + i + "篇[" + t.getName() + "]文章",
                                     "第" + i + "篇[" + t.getName() + "]文章内容", t.getId(), user);
-                            int n = random.nextInt(i) + 5;
-                            for (int j = 1; j <= n; j++) {
+                            for (int j = 1; j <= n + 18; j++) {
                                 commentService.add("评论" + j, post.getId(), user);
                             }
                             logger.info("Data init success!");

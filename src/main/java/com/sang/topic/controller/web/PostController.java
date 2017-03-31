@@ -27,6 +27,7 @@ public class PostController {
     public ModelAndView post(@PathVariable Integer postId, Page page, Map<String, Object> model) throws ResultException {
         model.put("post", postService.get(postId));
         model.put("comments", commentService.getByPostIdAndPage(postId, page));
+        model.put("postId", postId);
         return new ModelAndView("post", model);
     }
 }

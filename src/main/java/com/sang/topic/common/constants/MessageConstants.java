@@ -12,6 +12,7 @@ public interface MessageConstants {
     String USER_LOGIN_FAIL = "用户名或密码错误";
     String USER_PASSWORD_FAIL = "旧密码错误";
     String USER_LOGIN_REQUIRE = "请登录后操作";
+    String USER_NOT_FOUND = "不存在的用户";
 
     String USER_SAVE_FAIL = "用户信息保存失败";
     String USER_SAVE_SUCCESS = "用户信息保存成功";

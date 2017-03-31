@@ -1,10 +1,14 @@
 package com.sang.topic;
 
+import com.sang.topic.controller.rest.handler.RestExceptionHandler;
 import com.sang.topic.controller.web.interceptor.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 @Configuration
 public class TopicWebAppConfigurer extends WebMvcConfigurerAdapter{
@@ -15,6 +19,12 @@ public class TopicWebAppConfigurer extends WebMvcConfigurerAdapter{
                 .excludePathPatterns("/rest/**")
                 .excludePathPatterns("/module/**");
         super.addInterceptors(registry);
+    }
+
+    @Override
+    public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+        super.configureHandlerExceptionResolvers(exceptionResolvers);
+        exceptionResolvers.add(new RestExceptionHandler());
     }
 
     @Bean

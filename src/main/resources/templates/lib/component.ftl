@@ -1,14 +1,24 @@
 <#macro baseHtml title="topic2">
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="UTF-8">
 	<title>${title}</title>
-	<link rel="stylesheet" href="${basePath}/module/bootstrap/css/bootstrap.min.css">
-	<srcipt src="${basePath}/module/jquery/jquery-1.9.1/jquery.min.js"></srcipt>
-	<srcipt src="${basePath}/module/bootstrap/js/bootstrap.min.js"></srcipt>
-	<srcipt src="${basePath}/module/vue/vue.min.js"></srcipt>
+
+	<link href="${basePath}/module/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+	<script>
+		var basePath = "${basePath}";
+	</script>
+	<script src="${basePath}/module/jquery/jquery-1.12.3.min.js"></script>
+	<script src="${basePath}/module/jquery.cookie/jquery.cookie.js"></script>
+	<script src="${basePath}/module/bootstrap/js/bootstrap.min.js"></script>
+	<script src="${basePath}/module/vue/vue.min.js"></script>
+	<script src="${basePath}/module/topic/js/topic.js"></script>
 	<style>
+		#content {
+			background: #ccc;
+		}
 	</style>
 </head>
 <body>
@@ -16,12 +26,12 @@
 	<div id="header">
         <@BSnav navs=topNav/>
 	</div>
-	<div id="main">
+	<div id="content">
         <#nested>
 	</div>
 	<div id="footer">
 		<div class="container">
-			<a href="https://github.com/sggzh/topic2"><h4>GitHub</h4></a>
+			<h4><span><a href="https://github.com/sggzh/topic2">GitHub</a></span></h4>
 		</div>
 	</div>
 </div>
@@ -30,10 +40,10 @@
 </#macro>
 
 <#-- 带标签的input,label:显示内容 name:name -->
-<#macro BSinput label name type="text">
+<#macro BSinput label name type="text" id="">
 <div class="form-group">
-	<label>${label}</label>
-	<input type="${type}" class="form-control" name="${name}" id="" placeholder="">
+	<label for="${id}">${label}</label>
+	<input type="${type}" class="form-control" id="${id}" name="${name}">
 </div>
 </#macro>
 
@@ -44,11 +54,30 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" href="${basePath}/">Topic2</a>
 		</div>
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-                <#list topNav as nav>
+                <#list navs as nav>
 					<li class=""><a href="${basePath}/t/${nav.id}">${nav.name}</a></li>
                 </#list>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+                <#if Session.sessionUser??>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+						   aria-expanded="false">
+                        ${Session.sessionUser.username}
+							<span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="${basePath}/u/${Session.sessionUser.id}">个人信息</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="javascript:;" onclick="logout()">注销</a></li>
+						</ul>
+					</li>
+                <#else>
+					<li><a href="${basePath}/login">登录</a></li>
+					<li><a href="${basePath}/register">注册</a></li>
+                </#if>
 			</ul>
 		</div>
 	</div>
@@ -92,3 +121,4 @@
 	</li>
 </ul>
 </#macro>
+
