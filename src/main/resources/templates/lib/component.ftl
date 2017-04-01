@@ -96,6 +96,18 @@
 </ul>
 </#macro>
 
+<#macro BSnav3 navs>
+<ol class="breadcrumb" style="margin: 0; padding: 0.5rem 1rem">
+    <#list navs as nav>
+        <#if nav?is_last >
+	        <li class="active">${nav.name}</li>
+        <#else>
+			<li><a href="${basePath}/t/${nav.id}">${nav.name}</a></li>
+        </#if>
+    </#list>
+</ol>
+</#macro>
+
 <#-- 页码,url:无参路径,page:分页模型 -->
 <#macro BSpage url page>
 <ul class="pagination">

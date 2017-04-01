@@ -14,11 +14,11 @@ public interface TopicService {
 
     Topic add(String name, Integer parentId) throws ResultException;
 
-    Topic add(String name) throws ResultException;
-
     Topic get(Integer id) throws ResultException;
 
     List<Topic> getChildren(Integer id) throws ResultException;
 
     List<Topic> getBrother(Integer id) throws ResultException;
+
+    List<Topic> getParentTopic(Integer topicId);
 }

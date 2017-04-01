@@ -38,8 +38,8 @@ public class TopicRestController {
     }
 
     @PostMapping("")
-    public Result add(String name) throws ResultException {
-        Topic topic = topicService.add(name);
+    public Result add(String name, Integer parentId) throws ResultException {
+        Topic topic = topicService.add(name, parentId);
         return Result.success().add("topic", topic);
     }
 }

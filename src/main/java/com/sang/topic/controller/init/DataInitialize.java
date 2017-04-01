@@ -42,12 +42,13 @@ public class DataInitialize implements InitializingBean {
         if (count <= 0) {
             logger.info("Begin Data init");
             User user = new User();
+            user.setId(1);
             user.setUsername("admin");
             user.setPassword(SecurityUtil.encryptPassword("admin"));
             user.setRoleId(1);
             userService.add(user);
 
-            Topic topic = topicService.add("Topic");
+            Topic topic = topicService.add("Topic", 0);
 
             List<String> list = Arrays.asList("闲聊", "技术", "游戏");
             for (String name : list) {

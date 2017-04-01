@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -44,17 +45,15 @@ public class TopicServiceImpl implements TopicService {
             if (parent == null)
                 throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
             topic.setLevel(parent.getLevel() + 1);
+            if (parent.isRoot())
+                topic.setParentIds(parentId.toString());
+            else
+                topic.setParentIds(parent.getParentIds() + "," + parentId);
         } else {
             topic.setLevel(1);
         }
         topicRepository.save(topic);
         return topic;
-    }
-
-    @Transactional
-    @Override
-    public Topic add(String name) throws ResultException {
-        return this.add(name, 0);
     }
 
     @Override
@@ -80,6 +79,19 @@ public class TopicServiceImpl implements TopicService {
         if (parentTopic == null)
             return new ArrayList<>();
         List<Topic> list = topicRepository.findByParentId(parentTopic.getId());
+        return list;
+    }
+
+    @Override
+    public List<Topic> getParentTopic(Integer topicId) {
+        Topic t = topicRepository.findOne(topicId);
+        List<Integer> idList = new ArrayList<>();
+        String[] ids = t.getParentIds().split(",");
+        for (String id : ids){
+            idList.add(Integer.valueOf(id));
+        }
+        List<Topic> list = topicRepository.findByIdIn(idList);
+        list.add(t);
         return list;
     }
 }

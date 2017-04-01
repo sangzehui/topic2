@@ -7,7 +7,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   datasource:
     url: jdbc:mysql://localhost:3306/topic2?useUnicode=true&characterEncoding=UTF-8
     username: root

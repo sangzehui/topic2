@@ -18,6 +18,20 @@ public class Topic {
 
     private Integer parentId;
 
+    private String parentIds;
+
+    public boolean isRoot() {
+        return this.id == 1;
+    }
+
+    public String getParentIds() {
+        return parentIds;
+    }
+
+    public void setParentIds(String parentIds) {
+        this.parentIds = parentIds;
+    }
+
     public Integer getParentId() {
         return parentId;
     }

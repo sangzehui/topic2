@@ -10,13 +10,16 @@
 </style>
 <div class="container">
 	<div id="main">
+		<div>
+			<@c.BSnav3 navs=parentTopic/>
+		</div>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<span>${post.title}</span>
-                    <span class="navbar-right">
-                        创建时间：${post.createTime}
-                        来自: <a href="${basePath}/u/${post.userId}">${post.username}</a>
-                    </span>
+				<span class="navbar-right">
+                    创建时间：${post.createTime}
+                    来自: <a href="${basePath}/u/${post.userId}">${post.username}</a>
+                </span>
 			</div>
 			<div class="panel-body">
 				<div class="pre">${post.content}</div>

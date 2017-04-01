@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
@@ -34,5 +35,26 @@ public class IndexController {
         model.put("nav2", topicService.getSecondLevel());
         model.put("page", page);
         return new ModelAndView("topic");
+    }
+
+    @RequestMapping("/400")
+    public ModelAndView error400(Map<String, Object> model){
+        model.put("status", 400);
+        model.put("message", "错误的请求方式");
+        return new ModelAndView("error");
+    }
+
+    @RequestMapping("/404")
+    public ModelAndView error404(Map<String, Object> model){
+        model.put("status", 404);
+        model.put("message", "找不到页面");
+        return new ModelAndView("error");
+    }
+
+    @RequestMapping("/500")
+    public ModelAndView error500(Map<String, Object> model){
+        model.put("status", 500);
+        model.put("message", "服务器发生错误");
+        return new ModelAndView("error");
     }
 }
