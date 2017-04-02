@@ -42,6 +42,14 @@ function topicAlert(parameters) {
     }, 1000);
 }
 
+/**
+ * 返回模态窗口，一个id只构建一次
+ * @param modalId
+ * @param title
+ * @param body
+ * @param footer
+ * @returns {*|jQuery|HTMLElement}
+ */
 function topicModal(modalId, title, body, footer) {
     var $modal = $("#" + modalId);
     if ($modal.length > 0) {

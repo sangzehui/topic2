@@ -13,7 +13,6 @@
 	<script src="${basePath}/module/jquery/jquery-1.12.3.min.js"></script>
 	<script src="${basePath}/module/jquery.cookie/jquery.cookie.js"></script>
 	<script src="${basePath}/module/bootstrap/js/bootstrap.min.js"></script>
-	<script src="${basePath}/module/vue/vue.min.js"></script>
 	<script src="${basePath}/module/topic/js/topic.js"></script>
 	<style>
 		#content {
@@ -96,6 +95,7 @@
 </ul>
 </#macro>
 
+<#-- 路径导航 -->
 <#macro BSnav3 navs>
 <ol class="breadcrumb" style="margin: 0; padding: 0.5rem 1rem">
     <#list navs as nav>

@@ -1,6 +1,6 @@
-<#import "lib/component.ftl" as c>
+<#import "../lib/component.ftl" as c>
 
-<@c.baseHtml title="错误页面">
+<@c.baseHtml title="用户信息">
 <style>
 	.wrapper {
 		margin-top: 1rem;
@@ -13,7 +13,7 @@
 			<div class="panel-body">
 				<div class="col-md-4 col-md-offset-4">
 					<div class="text-center">
-                      <h1>${status} ${message}</h1>
+						<h2>${user.username}</h2>
 					</div>
 				</div>
 			</div>
