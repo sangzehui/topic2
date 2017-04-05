@@ -7,15 +7,19 @@
 
 	<link href="${basePath}/module/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<link href="${basePath}/module/AdminLTE/css/AdminLTE.min.css" rel="stylesheet">
-	<link href="${basePath}/module/AdminLTE/css/skins/skin-blue.min.css" rel="stylesheet">
+	<link href="${basePath}/module/AdminLTE/css/skins/_all-skins.min.css" rel="stylesheet">
+	<link href="${basePath}/module/bootstrap-treeview/bootstrap-treeview.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
 	<script src="${basePath}/module/jquery/jquery-2.2.3.min.js"></script>
 	<script src="${basePath}/module/jquery.cookie/jquery.cookie.js"></script>
 	<script src="${basePath}/module/bootstrap/js/bootstrap.min.js"></script>
-
+	<script src="${basePath}/module/bootstrap-treeview/bootstrap-treeview.min.js"></script>
 	<script src="${basePath}/module/AdminLTE/js/app.js"></script>
+
+	<script src="${basePath}/module/topic/js/topic.js"></script>
+	<script src="${basePath}/module/topic/js/topic-admin.js"></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -47,6 +51,15 @@
 
 </body>
 </html>
+</#macro>
+
+<#macro BSinput label name type="text" id="" attr="">
+<div class="form-group">
+	<label for="${id}" class="col-md-3 control-label">${label}</label>
+	<div class="col-md-8">
+		<input type="${type}" class="form-control" id="${id}" name="${name}" ${attr}>
+	</div>
+</div>
 </#macro>
 
 <#macro adminHeader>
@@ -108,13 +121,25 @@
 		<!-- Sidebar Menu -->
 		<ul class="sidebar-menu">
 			<li class="active">
-				<a href="#">
+				<a href="${basePath}/admin/">
 					<i class="fa fa-link"></i>
 					<span>仪表板</span>
 				</a>
 			</li>
+			<li>
+				<a href="${basePath}/admin/t">
+					<i class="fa fa-link"></i>
+					<span>目录管理</span>
+				</a>
+			</li>
+			<li>
+				<a href="#">
+					<i class="fa fa-link"></i>
+					<span>系统管理</span>
+				</a>
+			</li>
 			<li class="treeview">
-				<a href="#"><i class="fa fa-link"></i> <span>话题管理</span>
+				<a href="#"><i class="fa fa-link"></i> <span>应用管理</span>
 					<span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>

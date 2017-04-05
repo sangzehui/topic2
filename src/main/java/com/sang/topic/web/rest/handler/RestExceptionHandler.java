@@ -17,7 +17,8 @@ public class RestExceptionHandler implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (!request.getRequestURL().toString().startsWith(request.getContextPath() + "/rest"))
+        if (!request.getRequestURL().toString().startsWith(request.getContextPath() + "/rest")
+                && !request.getRequestURL().toString().startsWith(request.getContextPath() + "/admin/rest"))
             return null;
         response.setStatus(HttpStatus.OK.value()); //设置状态码
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); //设置ContentType

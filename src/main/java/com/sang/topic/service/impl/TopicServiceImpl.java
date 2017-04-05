@@ -5,6 +5,7 @@ import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
+import com.sang.topic.common.model.TreeView;
 import com.sang.topic.dao.TopicRepository;
 import com.sang.topic.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -87,11 +86,38 @@ public class TopicServiceImpl implements TopicService {
         Topic t = topicRepository.findOne(topicId);
         List<Integer> idList = new ArrayList<>();
         String[] ids = t.getParentIds().split(",");
-        for (String id : ids){
+        for (String id : ids) {
             idList.add(Integer.valueOf(id));
         }
         List<Topic> list = topicRepository.findByIdIn(idList);
         list.add(t);
         return list;
+    }
+
+    @Override
+    public List<TreeView> getTreeView() {
+        TreeView root = new TreeView();
+        List<Topic> list = topicRepository.findAll();
+        list.forEach(t -> {
+            if (t.isRoot()) {
+                root.setId(t.getId());
+                root.setText(t.getName());
+            } else {
+                root.addNode(t.getParentIds(), t.getId(), t.getName());
+            }
+        });
+        List<TreeView> result = new ArrayList<>();
+        result.add(root);
+        return result;
+    }
+
+    @Override
+    public Topic save(Integer topicId, String name, Integer available) throws ResultException {
+        Topic topic = topicRepository.findOne(topicId);
+        if(topic == null)
+            throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
+//        topic.setName(name);
+        topic.setAvailable(available);
+        return topicRepository.save(topic);
     }
 }
