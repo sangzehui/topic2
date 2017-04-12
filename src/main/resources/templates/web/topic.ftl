@@ -24,23 +24,44 @@
 </style>
 <div class="container">
 	<div id="main" class="wrapper col-md-9">
-		<div class="nav2-bg"><@c.BSnav2 navs=nav2 topicId=topicId/></div>
-		<div class="list-group">
-            <#list posts as post>
-				<li class="list-group-item">
-					<div class="list-title">
-						<a href="${basePath}/p/${post.id}">${post.title}</a>
+        <#if nav2??>
+			<div class="nav2-bg"><@c.BSnav2 navs=nav2 topicId=topicId/></div>
+        </#if>
+        <#if posts??>
+			<div class="list-group">
+                <#list posts as post>
+					<li class="list-group-item">
+						<div class="list-title">
+							<a href="${basePath}/p/${post.id}">${post.title}</a>
+						</div>
+						<div class="pull-right"><span class="badge">${post.commentNumber}</span></div>
+						<div class="post-bottom">
+							作者：<a href="/u/${post.userId}">${post.username}</a>
+							创建时间：${post.createTime}
+							最后回复时间：${post.updateTime}
+						</div>
+					</li>
+                </#list>
+			</div>
+			<div><@c.BSpage page=page url=url/></div>
+        </#if>
+        <#if childTopics??>
+			<div class="row">
+                <#list childTopics as topic>
+					<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<div class="caption">
+								<a href="${basePath}/t/${topic.id}">
+									<h3>${topic.name}</h3>
+									<p>
+									</p>
+								</a>
+							</div>
+						</div>
 					</div>
-					<div class="pull-right"><span class="badge">${post.commentNumber}</span></div>
-					<div class="post-bottom">
-						作者：<a href="/u/${post.userId}">${post.username}</a>
-						创建时间：${post.createTime}
-						最后回复时间：${post.updateTime}
-					</div>
-				</li>
-            </#list>
-		</div>
-		<div><@c.BSpage page=page url=url/></div>
+                </#list>
+			</div>
+        </#if>
 	</div>
 	<div class="wrapper col-md-3">
         <#if Session.sessionUser?? && topicId??>

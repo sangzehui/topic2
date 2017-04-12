@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment add(String content, Integer postId, User user) throws ResultException {
         Post post = postService.get(postId);
         post.setCommentNumber(post.getCommentNumber() + 1);
+        post.setUpdateTime(new Date());
         if (user == null)
             throw new ResultException(MessageConstants.USER_LOGIN_REQUIRE);
         Comment comment = new Comment();

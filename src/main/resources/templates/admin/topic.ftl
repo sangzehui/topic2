@@ -21,8 +21,24 @@
 						</select>
 					</div>
 				</div>
-                <@c.BSinput label="用途" name=""/>
-                <@c.BSinput label="排序" name=""/>
+				<div class="form-group">
+					<label class="col-md-3 control-label">排序方式</label>
+					<div class="col-md-8">
+						<select class="form-control" name="orderType">
+							<option value="1">创建时间优先</option>
+							<option value="2">更新时间优先</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">显示内容</label>
+					<div class="col-md-8">
+						<select class="form-control" name="pageType">
+							<option value="1">显示子目录</option>
+							<option value="2">显示文章</option>
+						</select>
+					</div>
+				</div>
 			</form>
 		</div>
 		<div class="col-md-2 text-right">
@@ -67,6 +83,8 @@
 				$("#topicForm [name='id']").val(result.data.topic.id);
 				$("#topicForm [name='name']").val(result.data.topic.name);
 				$("#topicForm [name='available']").val(result.data.topic.available);
+				$("#topicForm [name='orderType']").val(result.data.topic.orderType);
+				$("#topicForm [name='pageType']").val(result.data.topic.pageType);
 			} else {
 				topicAlert2({result: "danger", message: result.message});
 			}

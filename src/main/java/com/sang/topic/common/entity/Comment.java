@@ -20,14 +20,16 @@ public class Comment {
     @Column(nullable = false)
     private Integer postId;
 
+    @Column(nullable = false)
     private Integer available;
 
     @Column(nullable = false)
     private String username;
 
-    @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'")
+    @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'", nullable = false)
     private Date createTime;
 
+    @Column(nullable = false)
     private Integer floor;
 
     public Integer getId() {

@@ -6,7 +6,7 @@ public interface MessageConstants {
 
     String USER_CREATE_SUCCESS = "创建用户名成功";
     String USER_CREATE_FAIL = "创建用户名失败";
-    String USER_CREATE_REPEAT = "用户名重复";
+    String USER_CREATE_REPEAT = "重复";
 
     String USER_LOGIN_SUCCESS = "登录成功";
     String USER_LOGIN_FAIL = "用户名或密码错误";

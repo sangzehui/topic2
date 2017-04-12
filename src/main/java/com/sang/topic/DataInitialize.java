@@ -1,5 +1,6 @@
 package com.sang.topic;
 
+import com.sang.topic.common.constants.CommonConstants;
 import com.sang.topic.common.entity.Post;
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.entity.User;
@@ -48,7 +49,9 @@ public class DataInitialize implements InitializingBean {
             user.setRoleId(1);
             userService.add(user);
 
-            Topic topic = topicService.add("Topic", 0);
+            Topic tt = topicService.add("Topic", 0);
+            tt.setPageType(CommonConstants.PageType.SHOW_CHILD_TOPIC);
+            Topic topic = topicService.save(tt);
 
             List<String> list = Arrays.asList("闲聊", "技术", "游戏");
             for (String name : list) {

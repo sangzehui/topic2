@@ -26,8 +26,10 @@ public class User {
 
     private String photo;
 
+    @Column(nullable = false)
     private Integer roleId;
 
+    @Column(nullable = false)
     private Integer available;
 
     @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'")

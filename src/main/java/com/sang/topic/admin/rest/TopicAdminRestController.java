@@ -1,5 +1,6 @@
 package com.sang.topic.admin.rest;
 
+import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Result;
 import com.sang.topic.service.PostService;
@@ -22,8 +23,8 @@ public class TopicAdminRestController {
     }
 
     @PutMapping("/{topicId}")
-    public Result saveTopic(@PathVariable Integer topicId, String name, Integer available) throws ResultException {
-        return Result.success().add("topic", topicService.save(topicId, name, available));
+    public Result saveTopic(@PathVariable Integer topicId, Topic topic) throws ResultException {
+        return Result.success().add("topic", topicService.save(topic));
     }
 
     @GetMapping("/{topicId}")

@@ -10,18 +10,41 @@ public class Topic {
     @GeneratedValue
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private Integer available;
 
-    private Integer level;
-
+    @Column(nullable = false)
     private Integer parentId;
 
     private String parentIds;
 
+    @Column(nullable = false)
+    private Integer orderType;
+
+    @Column(nullable = false)
+    private Integer pageType;
+
     public boolean isRoot() {
         return this.id == 1;
+    }
+
+    public Integer getPageType() {
+        return pageType;
+    }
+
+    public void setPageType(Integer pageType) {
+        this.pageType = pageType;
+    }
+
+    public Integer getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(Integer orderType) {
+        this.orderType = orderType;
     }
 
     public String getParentIds() {
@@ -38,14 +61,6 @@ public class Topic {
 
     public void setParentId(Integer parentId) {
         this.parentId = parentId;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
     }
 
     public Integer getId() {

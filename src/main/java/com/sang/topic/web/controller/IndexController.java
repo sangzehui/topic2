@@ -30,10 +30,7 @@ public class IndexController {
 
     @GetMapping("")
     public ModelAndView index(Map<String, Object> model, Page page) {
-        model.put("posts", postService.getAll(page));
-        model.put("nav2", topicService.getSecondLevel());
-        model.put("page", page);
-        return new ModelAndView("web/topic");
+        return new ModelAndView("web/index");
     }
 
     @RequestMapping("/400")

@@ -1,6 +1,7 @@
 package com.sang.topic.common.model;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 /**
  * 默认page为0,pageSize为20
@@ -19,8 +20,12 @@ public class Page {
     private static Integer MAX_PAGE_SIZE = 20;
     private static Integer EXTEND_MAX_SIZE = 4;
 
+    public PageRequest toPageable(Sort sort){
+        return new PageRequest(getPage()-1, getPageSize(), sort);
+    }
+
     public PageRequest toPageable() {
-        return new PageRequest(getPage() - 1, getPageSize());
+        return this.toPageable(null);
     }
 
     public Integer getPrePage() {

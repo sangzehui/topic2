@@ -17,17 +17,12 @@ import java.util.Map;
 @RequestMapping("/t")
 public class TopicController {
     @Autowired
-    PostService postService;
-    @Autowired
     TopicService topicService;
 
     @GetMapping("/{topicId}")
     public ModelAndView topic(@PathVariable Integer topicId, Page page, Map<String, Object> model)
             throws ResultException {
-        model.put("posts", postService.getByTopicId(topicId, page));
-        model.put("nav2", topicService.getBrother(topicId));
-        model.put("page", page);
-        model.put("topicId", topicId);
+        topicService.getWithPageType(topicId, page, model);
         return new ModelAndView("web/topic");
     }
 }

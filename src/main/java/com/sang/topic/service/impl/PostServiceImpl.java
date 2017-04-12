@@ -1,15 +1,19 @@
 package com.sang.topic.service.impl;
 
 
+import com.sang.topic.common.constants.CommonConstants;
 import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Post;
+import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.entity.User;
 import com.sang.topic.common.exception.ResultException;
 import com.sang.topic.common.model.Page;
 import com.sang.topic.dao.PostRepository;
+import com.sang.topic.dao.TopicRepository;
 import com.sang.topic.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,8 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    TopicRepository topicRepository;
 
     @Override
     public List<Post> getAll(Page page) {
@@ -30,7 +36,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getByTopicId(Integer topicId, Page page) {
-        org.springframework.data.domain.Page<Post> p = postRepository.findByTopicId(topicId, page.toPageable());
+        Sort sort = null;
+        Topic topic = topicRepository.findOne(topicId);
+        if(topic.getOrderType() == CommonConstants.OrderType.CREATE_TIME_FIRST) {
+            sort = new Sort(Sort.Direction.DESC, "createTime");
+        }else if(topic.getOrderType() == CommonConstants.OrderType.UPDATE_TIME_FIRST){
+            sort = new Sort(Sort.Direction.DESC, "updateTime");
+        }
+        org.springframework.data.domain.Page<Post> p = postRepository.findByTopicId(topicId, page.toPageable(sort));
         page.setCount(p.getTotalElements());
         return p.getContent();
     }

@@ -1,12 +1,15 @@
 package com.sang.topic.service.impl;
 
 
+import com.sang.topic.common.constants.CommonConstants;
 import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
+import com.sang.topic.common.model.Page;
 import com.sang.topic.common.model.TreeView;
 import com.sang.topic.dao.TopicRepository;
+import com.sang.topic.service.PostService;
 import com.sang.topic.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +23,21 @@ public class TopicServiceImpl implements TopicService {
     @Autowired
     TopicRepository topicRepository;
     @Autowired
+    PostService postService;
+    @Autowired
     private EntityManager em;
 
     @Override
-    public List<Topic> getFirstLevel() {
-        return topicRepository.findByLevel(1);
-    }
-
-    @Override
-    public List<Topic> getSecondLevel() {
-        return topicRepository.findByLevel(2);
+    public void getWithPageType(Integer topicId, Page page, Map<String, Object> model) throws ResultException {
+        Topic topic = topicRepository.findOne(topicId);
+        if(topic.getPageType() == CommonConstants.PageType.SHOW_CHILD_TOPIC){
+            model.put("childTopics", this.getChildren(topicId));
+        }else if(topic.getPageType() == CommonConstants.PageType.SHOW_POST){
+            model.put("posts", postService.getByTopicId(topicId, page));
+            model.put("nav2", this.getBrother(topicId));
+            model.put("page", page);
+        }
+        model.put("topicId", topicId);
     }
 
     @Transactional
@@ -39,17 +47,16 @@ public class TopicServiceImpl implements TopicService {
         topic.setName(name);
         topic.setAvailable(1);
         topic.setParentId(parentId);
+        topic.setOrderType(CommonConstants.OrderType.DEFAULT);
+        topic.setPageType(CommonConstants.PageType.DEFAULT);
         if (parentId != 0) {
             Topic parent = topicRepository.findOne(parentId);
             if (parent == null)
                 throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
-            topic.setLevel(parent.getLevel() + 1);
             if (parent.isRoot())
                 topic.setParentIds(parentId.toString());
             else
                 topic.setParentIds(parent.getParentIds() + "," + parentId);
-        } else {
-            topic.setLevel(1);
         }
         topicRepository.save(topic);
         return topic;
@@ -112,12 +119,28 @@ public class TopicServiceImpl implements TopicService {
     }
 
     @Override
-    public Topic save(Integer topicId, String name, Integer available) throws ResultException {
+    public Topic save(Integer topicId, String name, Integer available, Integer orderType) throws ResultException {
         Topic topic = topicRepository.findOne(topicId);
-        if(topic == null)
+        if (topic == null)
             throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
 //        topic.setName(name);
         topic.setAvailable(available);
-        return topicRepository.save(topic);
+        topic.setOrderType(orderType);
+        return this.save(topic);
+    }
+
+    @Override
+    public Topic save(Topic topic) throws ResultException {
+        Topic t = topicRepository.findOne(topic.getId());
+        t.setPageType(topic.getPageType());
+        t.setOrderType(topic.getOrderType());
+        t.setAvailable(topic.getAvailable());
+        t.setName(topic.getName());
+        return topicRepository.save(t);
+    }
+
+    @Override
+    public List<Topic> getFirstLevel() {
+        return topicRepository.findByParentId(0);
     }
 }

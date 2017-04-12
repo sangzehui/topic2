@@ -31,22 +31,17 @@ public class TreeView {
     }
 
     private static TreeView findNode(TreeView node, List<Integer> paths) {
-        //到最后一个父目录,创建子节点
         if (paths.isEmpty()) {
             return addNode(node);
         }
-        //下一个节点
         Integer pathId = paths.remove(0);
-        //如果子节点如果不为空，在子节点中寻找下一个节点是否已经创建
         if (node.nodes != null) {
             for (TreeView n : node.nodes) {
-                //如果在子节点中找到要下一个节点，进入
                 if (pathId.equals(n.getId())) {
                     return findNode(n, paths);
                 }
             }
         }
-        //如果下一个节点不存在，创建并进入
         return findNode(addNode(node), paths);
     }
 

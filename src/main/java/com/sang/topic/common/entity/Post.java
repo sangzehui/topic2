@@ -22,18 +22,19 @@ public class Post {
     @Column(nullable = false)
     private Integer topicId;
 
+    @Column(nullable = false)
     private Integer available;
 
     @Column(nullable = false)
     private String username;
 
-    @Column(columnDefinition = "integer default 0")
+    @Column(columnDefinition = "integer default 0", nullable = false)
     private Integer commentNumber;
 
-    @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'")
+    @Column(columnDefinition = "timestamp default '0000-00-00 00:00:00'", nullable = false)
     private Date createTime;
 
-    @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    @Column(columnDefinition = "timestamp default CURRENT_TIMESTAMP", nullable = false)
     private Date updateTime;
 
     public Integer getId() {

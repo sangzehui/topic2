@@ -3,15 +3,15 @@ package com.sang.topic.service;
 
 import com.sang.topic.common.entity.Topic;
 import com.sang.topic.common.exception.ResultException;
+import com.sang.topic.common.model.Page;
 import com.sang.topic.common.model.TreeView;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TopicService {
-    List<Topic> getFirstLevel();
-
-    List<Topic> getSecondLevel();
+    void getWithPageType(Integer topicId, Page page, Map<String, Object> model) throws ResultException;
 
     Topic add(String name, Integer parentId) throws ResultException;
 
@@ -25,5 +25,9 @@ public interface TopicService {
 
     List<TreeView> getTreeView();
 
-    Topic save(Integer topicId, String name, Integer available) throws ResultException;
+    Topic save(Integer topicId, String name, Integer available, Integer orderType) throws ResultException;
+
+    Topic save(Topic topic) throws ResultException;
+
+    List<Topic> getFirstLevel();
 }

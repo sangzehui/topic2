@@ -20,6 +20,7 @@ public class TopicWebAppConfigurer extends WebMvcConfigurerAdapter{
         registry.addInterceptor(requestInterceptor())
                 .addPathPatterns("/**")
                 .excludePathPatterns("/rest/**")
+                .excludePathPatterns("/admin/rest/**")
                 .excludePathPatterns("/module/**");
         super.addInterceptors(registry);
     }
