@@ -1,4 +1,4 @@
-<#import "../lib/component.ftl" as c>
+<#import "lib/component.ftl" as c>
 
 <@c.baseHtml title="用户登录">
 <style>

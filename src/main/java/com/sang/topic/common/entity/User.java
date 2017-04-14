@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties(value={"password", "roleId"})
+@JsonIgnoreProperties(value={"password"})
 public class User {
     @Id
     @GeneratedValue

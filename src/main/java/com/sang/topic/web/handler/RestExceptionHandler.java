@@ -1,4 +1,4 @@
-package com.sang.topic.web.rest.handler;
+package com.sang.topic.web.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sang.topic.common.model.Result;
@@ -17,8 +17,8 @@ public class RestExceptionHandler implements HandlerExceptionResolver {
 
     @Override
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-        if (!request.getRequestURL().toString().startsWith(request.getContextPath() + "/rest")
-                && !request.getRequestURL().toString().startsWith(request.getContextPath() + "/admin/rest"))
+        String url = request.getRequestURL().toString();
+        if (url.indexOf("/rest") == -1)
             return null;
         response.setStatus(HttpStatus.OK.value()); //设置状态码
         response.setContentType(MediaType.APPLICATION_JSON_VALUE); //设置ContentType

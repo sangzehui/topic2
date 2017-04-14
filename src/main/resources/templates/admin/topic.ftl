@@ -1,4 +1,4 @@
-<#import "../lib/admin-component.ftl" as c>
+<#import "lib/component.ftl" as c>
 
 <@c.baseHtml contentTitle="目录管理">
 <div class="box">

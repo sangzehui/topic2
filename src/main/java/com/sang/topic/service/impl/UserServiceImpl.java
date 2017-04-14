@@ -1,6 +1,7 @@
 package com.sang.topic.service.impl;
 
 
+import com.sang.topic.common.constants.CommonConstants;
 import com.sang.topic.common.constants.MessageConstants;
 import com.sang.topic.common.constants.ResultConstants;
 import com.sang.topic.common.entity.User;
@@ -23,11 +24,11 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User add(User user){
-        if(user.getRoleId() == null)
-            user.setRoleId(3);
-        if(user.getAvailable() == null)
-            user.setAvailable(1);
+    public User add(User user) {
+        if (user.getRoleId() == null)
+            user.setRoleId(CommonConstants.Role.NORMAL);
+        if (user.getAvailable() == null)
+            user.setAvailable(CommonConstants.Available.AVAILABLE);
         user.setCreateTime(new Date());
         return userRepository.save(user);
     }
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User get(Integer id) throws ResultException {
         User user = userRepository.findOne(id);
-        if(user == null)
+        if (user == null)
             throw new ResultException(MessageConstants.USER_NOT_FOUND, ResultConstants.NOT_FOUND);
         return user;
     }
@@ -66,12 +67,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll(new Page().toPageable()).getContent();
+    public List<User> getAll(Page page) {
+        org.springframework.data.domain.Page<User> p = userRepository.findAll(page.toPageable());
+        page.setCount(p.getTotalElements());
+        return p.getContent();
     }
 
     @Override
     public long getCount() {
         return userRepository.count();
+    }
+
+    @Override
+    public User save(User user) throws ResultException {
+        User u = userRepository.findOne(user.getId());
+        if(u == null)
+            throw new ResultException(MessageConstants.USER_NOT_FOUND, ResultConstants.NOT_FOUND);
+        u.setRoleId(user.getRoleId());
+        return userRepository.save(u);
     }
 }

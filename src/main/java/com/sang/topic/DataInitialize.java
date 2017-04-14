@@ -46,8 +46,12 @@ public class DataInitialize implements InitializingBean {
             user.setId(1);
             user.setUsername("admin");
             user.setPassword(SecurityUtil.encryptPassword("admin"));
-            user.setRoleId(1);
+            user.setRoleId(CommonConstants.Role.SUPER_ADMIN);
             userService.add(user);
+            User u2 = new User();
+            u2.setUsername("test-user");
+            u2.setPassword(SecurityUtil.encryptPassword("123456"));
+            userService.add(u2);
 
             Topic tt = topicService.add("Topic", 0);
             tt.setPageType(CommonConstants.PageType.SHOW_CHILD_TOPIC);

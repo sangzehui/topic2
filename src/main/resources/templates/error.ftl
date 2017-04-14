@@ -1,4 +1,4 @@
-<#import "lib/component.ftl" as c>
+<#import "web/lib/component.ftl" as c>
 
 <@c.baseHtml title="错误页面">
 <style>

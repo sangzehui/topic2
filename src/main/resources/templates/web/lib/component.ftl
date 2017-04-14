@@ -99,11 +99,7 @@
 <#macro BSnav3 navs>
 <ol class="breadcrumb" style="margin: 0; padding: 0.5rem 1rem">
     <#list navs as nav>
-        <#if nav?is_last >
-	        <li class="active">${nav.name}</li>
-        <#else>
-			<li><a href="${basePath}/t/${nav.id}">${nav.name}</a></li>
-        </#if>
+		<li><a href="${basePath}/t/${nav.id}">${nav.name}</a></li>
     </#list>
 </ol>
 </#macro>

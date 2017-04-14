@@ -1,6 +1,6 @@
 package com.sang.topic;
 
-import com.sang.topic.web.rest.handler.RestExceptionHandler;
+import com.sang.topic.web.handler.RestExceptionHandler;
 import com.sang.topic.web.controller.interceptor.RequestInterceptor;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;

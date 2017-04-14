@@ -32,7 +32,7 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
-                ${contentTitle}
+            ${contentTitle}
 				<small>${desc}</small>
 			</h1>
 		</section>
@@ -79,6 +79,9 @@
 		<!-- Navbar Right Menu -->
 		<div class="navbar-custom-menu">
 			<ul class="nav navbar-nav">
+				<li class="dropdown">
+					<a href="${basePath}/" target="_blank">首页</a>
+				</li>
 				<li class="dropdown user user-menu">
 					<!-- Menu Toggle Button -->
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -89,14 +92,6 @@
 						<span class="hidden-xs">Admin</span>
 					</a>
 					<ul class="dropdown-menu">
-						<!-- The user image in the menu -->
-						<li class="user-header">
-							<img src="${basePath}/module/AdminLTE/img/avatar5.png" class="img-circle"
-							     alt="User Image">
-							<p>
-                                Admin
-							</p>
-						</li>
 						<!-- Menu Footer-->
 						<li class="user-footer">
 							<div class="pull-left">
@@ -127,27 +122,16 @@
 				</a>
 			</li>
 			<li>
+				<a href="${basePath}/admin/u">
+					<i class="fa fa-link"></i>
+					<span>用户管理</span>
+				</a>
+			</li>
+			<li>
 				<a href="${basePath}/admin/t">
 					<i class="fa fa-link"></i>
 					<span>目录管理</span>
 				</a>
-			</li>
-			<li>
-				<a href="#">
-					<i class="fa fa-link"></i>
-					<span>系统管理</span>
-				</a>
-			</li>
-			<li class="treeview">
-				<a href="#"><i class="fa fa-link"></i> <span>应用管理</span>
-					<span class="pull-right-container">
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-				</a>
-				<ul class="treeview-menu">
-					<li><a href="#">Link in level 2</a></li>
-					<li><a href="#">Link in level 2</a></li>
-				</ul>
 			</li>
 		</ul>
 		<!-- /.sidebar-menu -->

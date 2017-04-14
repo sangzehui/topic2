@@ -1,4 +1,4 @@
-<#import "../lib/component.ftl" as c>
+<#import "lib/component.ftl" as c>
 
 <@c.baseHtml>
 <style>
