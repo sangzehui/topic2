@@ -16,6 +16,22 @@ public interface CommonConstants {
         int DEFAULT = SHOW_POST;
     }
 
+    interface SecNav {
+        int NONE = 0;
+        int BROTHER = 1;
+        int DEFAULT = BROTHER;
+    }
+
+    interface PostShowTypes {
+        int TITLE = 1;
+        int AUTHOR = 2;
+        int CREATE_TIME = 3;
+        int UPDATE_TIME = 4;
+        int COMMENT_NUMBER = 5;
+
+        String DEFAULT = "1,2,3,4,5";
+    }
+
     interface Role {
         int SUPER_ADMIN = 1;
         int MANAGER = 2;

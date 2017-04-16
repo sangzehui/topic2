@@ -10,6 +10,7 @@ import com.sang.topic.service.PostService;
 import com.sang.topic.service.TopicService;
 import com.sang.topic.service.UserService;
 import com.sang.topic.util.SecurityUtil;
+import com.sang.topic.util.TopicStringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,41 +43,48 @@ public class DataInitialize implements InitializingBean {
         long count = userService.getCount();
         if (count <= 0) {
             logger.info("Begin Data init");
-            User user = new User();
-            user.setId(1);
-            user.setUsername("admin");
-            user.setPassword(SecurityUtil.encryptPassword("admin"));
-            user.setRoleId(CommonConstants.Role.SUPER_ADMIN);
-            userService.add(user);
-            User u2 = new User();
-            u2.setUsername("test-user");
-            u2.setPassword(SecurityUtil.encryptPassword("123456"));
-            userService.add(u2);
+            User adminUser = new User();
+            adminUser.setId(1);
+            adminUser.setUsername("admin");
+            adminUser.setPassword(SecurityUtil.encryptPassword("admin"));
+            adminUser.setRoleId(CommonConstants.Role.SUPER_ADMIN);
+            userService.add(adminUser);
+            User testUser = new User();
+            testUser.setUsername("test-user");
+            testUser.setPassword(SecurityUtil.encryptPassword("123456"));
+            userService.add(testUser);
 
-            Topic tt = topicService.add("Topic", 0);
-            tt.setPageType(CommonConstants.PageType.SHOW_CHILD_TOPIC);
-            Topic topic = topicService.save(tt);
+            Topic t1 = topicService.add("topic", 0);
+            t1.setPageType(CommonConstants.PageType.SHOW_CHILD_TOPIC);
+            topicService.save(t1);
+
+            Topic blog = topicService.add("博客", t1.getId());
+            blog.setSecNav(CommonConstants.SecNav.NONE);
+            blog.setPostShowTypes(TopicStringUtils.integerToString(
+                    CommonConstants.PostShowTypes.TITLE
+                    ));
+            topicService.save(blog);
+            postService.add("第一篇博客标题", "第一篇博客内容", blog.getId(), adminUser);
+
+            Topic bbs = topicService.add("论坛", t1.getId());
+            bbs.setPageType(CommonConstants.PageType.SHOW_CHILD_TOPIC);
+            topicService.save(bbs);
 
             List<String> list = Arrays.asList("闲聊", "技术", "游戏");
             for (String name : list) {
-                new Thread(() -> {
-                    try {
-                        Topic t = topicService.add(name, topic.getId());
-                        Random random = new Random(System.currentTimeMillis());
-                        int n = random.nextInt(6) + 1;
-                        for (int i = 1; i <= n; i++) {
-                            Post post = postService.add("第" + i + "篇[" + t.getName() + "]文章",
-                                    "第" + i + "篇[" + t.getName() + "]文章内容", t.getId(), user);
-                            for (int j = 1; j <= n + 18; j++) {
-                                commentService.add("评论" + j, post.getId(), user);
-                            }
-                            logger.info("Data init success!");
-                        }
-                    } catch (ResultException e) {
-                        e.printStackTrace();
+                try {
+                    Topic t = topicService.add(name, bbs.getId());
+                    Random random = new Random(System.currentTimeMillis());
+                    int n = random.nextInt(6) + 1;
+                    Post post = postService.add("文章标题["+t.getName()+"]","文章内容", t.getId(), adminUser);
+                    for (int j = 1; j <= n + 18; j++) {
+                        commentService.add("评论" + j, post.getId(), adminUser);
                     }
-                }).start();
+                } catch (ResultException e) {
+                    e.printStackTrace();
+                }
             }
+            logger.info("Data init success!");
         }
     }
 }

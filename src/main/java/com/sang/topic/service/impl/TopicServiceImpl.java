@@ -11,6 +11,7 @@ import com.sang.topic.common.model.TreeView;
 import com.sang.topic.dao.TopicRepository;
 import com.sang.topic.service.PostService;
 import com.sang.topic.service.TopicService;
+import com.sang.topic.util.TopicStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +34,11 @@ public class TopicServiceImpl implements TopicService {
         if(topic.getPageType() == CommonConstants.PageType.SHOW_CHILD_TOPIC){
             model.put("childTopics", this.getChildren(topicId));
         }else if(topic.getPageType() == CommonConstants.PageType.SHOW_POST){
+            if(topic.getSecNav() != CommonConstants.SecNav.NONE){
+                model.put("nav2", this.getBrother(topicId));
+            }
+            model.put("topicShowTypes", TopicStringUtils.toIntegerList(topic.getPostShowTypes()));
             model.put("posts", postService.getByTopicId(topicId, page));
-            model.put("nav2", this.getBrother(topicId));
             model.put("page", page);
         }
         model.put("topicId", topicId);
@@ -49,6 +53,8 @@ public class TopicServiceImpl implements TopicService {
         topic.setParentId(parentId);
         topic.setOrderType(CommonConstants.OrderType.DEFAULT);
         topic.setPageType(CommonConstants.PageType.DEFAULT);
+        topic.setPostShowTypes(CommonConstants.PostShowTypes.DEFAULT);
+        topic.setSecNav(CommonConstants.SecNav.DEFAULT);
         if (parentId != 0) {
             Topic parent = topicRepository.findOne(parentId);
             if (parent == null)
@@ -72,7 +78,7 @@ public class TopicServiceImpl implements TopicService {
 
     @Override
     public List<Topic> getChildren(Integer id) throws ResultException {
-        List<Topic> list = topicRepository.findByParentId(id);
+        List<Topic> list = topicRepository.findByParentIdAndAvailable(id, CommonConstants.Available.AVAILABLE);
         return list;
     }
 
@@ -84,7 +90,7 @@ public class TopicServiceImpl implements TopicService {
         Topic parentTopic = topicRepository.findOne(topic.getParentId());
         if (parentTopic == null)
             return new ArrayList<>();
-        List<Topic> list = topicRepository.findByParentId(parentTopic.getId());
+        List<Topic> list = topicRepository.findByParentIdAndAvailable(parentTopic.getId(), CommonConstants.Available.AVAILABLE);
         return list;
     }
 
@@ -136,11 +142,13 @@ public class TopicServiceImpl implements TopicService {
         t.setOrderType(topic.getOrderType());
         t.setAvailable(topic.getAvailable());
         t.setName(topic.getName());
+        t.setPostShowTypes(topic.getPostShowTypes());
+        t.setSecNav(topic.getSecNav());
         return topicRepository.save(t);
     }
 
     @Override
     public List<Topic> getFirstLevel() {
-        return topicRepository.findByParentId(0);
+        return topicRepository.findByParentIdAndAvailable(1, CommonConstants.Available.AVAILABLE);
     }
 }

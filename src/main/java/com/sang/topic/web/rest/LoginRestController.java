@@ -30,26 +30,18 @@ public class LoginRestController {
     }
 
     @PostMapping("/login")
-    public Result login(HttpServletRequest request, String username, String password) {
-        try {
-            User user = userService.login(username, password);
-            Result result = Result.success();
-            result.add("user", user);
-            result.add("jsessionid", request.getSession().getId());
-            SessionUtil.addUser(request, (User) result.get("user"));
-            return result;
-        } catch (Exception e) {
-            return Result.exception(e);
-        }
+    public Result login(HttpServletRequest request, String username, String password) throws ResultException {
+        User user = userService.login(username, password);
+        Result result = Result.success();
+        result.add("user", user);
+        result.add("jsessionid", request.getSession().getId());
+        SessionUtil.addUser(request, (User) result.get("user"));
+        return result;
     }
 
     @PostMapping("/logout")
     public Result logout(HttpServletRequest request) {
-        try {
-            SessionUtil.removeUser(request);
-            return Result.success();
-        } catch (Exception e) {
-            return Result.exception(e);
-        }
+        SessionUtil.removeUser(request);
+        return Result.success();
     }
 }

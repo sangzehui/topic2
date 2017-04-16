@@ -62,6 +62,15 @@
 </div>
 </#macro>
 
+<#macro BScheckbox name text value="">
+<div class="checkbox">
+	<label>
+		<input name="${name}" type="checkbox" value="${value}" >
+		${text}
+	</label>
+</div>
+</#macro>
+
 <#macro adminHeader>
 <header class="main-header">
 	<a href="#" class="logo">

@@ -1,5 +1,7 @@
 package com.sang.topic.common.model;
 
+import com.sang.topic.util.TopicStringUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,11 +13,7 @@ public class TreeView {
     private List<TreeView> nodes;
 
     public void addNode(String paths, Integer id, String text) {
-        List<Integer> list = new LinkedList<>();
-        String[] pathArr = paths.split(",");
-        for (String path : pathArr) {
-            list.add(Integer.valueOf(path.trim()));
-        }
+        List<Integer> list = new LinkedList<>(TopicStringUtils.toIntegerList(paths));
         list.remove(0);
         TreeView node = findNode(this, list);
         node.setId(id);

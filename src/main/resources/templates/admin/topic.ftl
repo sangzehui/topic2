@@ -22,21 +22,44 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-md-3 control-label">排序方式</label>
-					<div class="col-md-8">
-						<select class="form-control" name="orderType">
-							<option value="1">创建时间优先</option>
-							<option value="2">更新时间优先</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
 					<label class="col-md-3 control-label">显示内容</label>
 					<div class="col-md-8">
 						<select class="form-control" name="pageType">
 							<option value="1">显示子目录</option>
 							<option value="2">显示文章</option>
 						</select>
+					</div>
+				</div>
+				<div id="showTopic">
+					<div class="form-group">
+						<label class="col-md-3 control-label">二级导航</label>
+						<div class="col-md-8">
+							<select class="form-control" name="secNav">
+								<option value="0">不显示</option>
+								<option value="1">显示兄弟目录</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">文章排序方式</label>
+						<div class="col-md-8">
+							<select class="form-control" name="orderType">
+								<option value="1">创建时间优先</option>
+								<option value="2">更新时间优先</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">文章显示内容</label>
+						<div class="col-md-8">
+							<div class="form-group">
+                                <@c.BScheckbox name="postShowTypes" text="标题" value="1"/>
+                                <@c.BScheckbox name="postShowTypes" text="作者" value="2"/>
+                                <@c.BScheckbox name="postShowTypes" text="创建时间" value="3"/>
+                                <@c.BScheckbox name="postShowTypes" text="更新时间" value="4"/>
+                                <@c.BScheckbox name="postShowTypes" text="回复数量" value="5"/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</form>
@@ -80,11 +103,20 @@
 		var url = "${basePath}/admin/rest/t/" + topicId;
 		$.get(url, {}, function (result) {
 			if (result.status == 0) {
-				$("#topicForm [name='id']").val(result.data.topic.id);
-				$("#topicForm [name='name']").val(result.data.topic.name);
-				$("#topicForm [name='available']").val(result.data.topic.available);
-				$("#topicForm [name='orderType']").val(result.data.topic.orderType);
-				$("#topicForm [name='pageType']").val(result.data.topic.pageType);
+			    var topic = result.data.topic;
+				$("#topicForm [name='id']").val(topic.id);
+				$("#topicForm [name='name']").val(topic.name);
+				$("#topicForm [name='available']").val(topic.available);
+				$("#topicForm [name='pageType']").val(topic.pageType);
+				$("#topicForm [name='orderType']").val(topic.orderType);
+				$("#topicForm [name='secNav']").val(topic.secNav);
+
+				assignCheckbox($("#topicForm [name='postShowTypes']"), topic.postShowTypes);
+
+				var $div = $("#topicForm #showTopic");
+				if(topic.pageType == 1)
+					$div.hide();
+				else $div.show()
 			} else {
 				topicAlert2({result: "danger", message: result.message});
 			}

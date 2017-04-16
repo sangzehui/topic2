@@ -12,10 +12,10 @@ function topicAlert2(parameters) {
                 <div class="alert alert-' + result + ' alert-dismissible">\
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>\
                     <h4><i class="icon fa fa-check"></i>提示!</h4>'
-                    + message +
-                '</div>\
-            </div>\
-        </div>';
+        + message +
+        '</div>\
+    </div>\
+</div>';
     var $div = $(div);
     $parent.prepend($div);
     $div.modal();
@@ -24,4 +24,19 @@ function topicAlert2(parameters) {
         if (success != undefined)
             success();
     }, 1000);
+}
+
+function assignCheckbox($checkbox, val) {
+    var arr = val.split(",");
+    $checkbox.each(function(){
+        $(this).removeAttr("checked");
+    })
+    $checkbox.each(function(){
+        var $ck = $(this);
+        arr.forEach(function(value, index, array) {
+            if($ck.val() == value){
+                $ck.prop("checked", true);
+            }
+        });
+    });
 }

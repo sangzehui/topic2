@@ -27,6 +27,26 @@ public class Topic {
     @Column(nullable = false)
     private Integer pageType;
 
+    private Integer secNav;
+
+    private String postShowTypes;
+
+    public Integer getSecNav() {
+        return secNav;
+    }
+
+    public void setSecNav(Integer secNav) {
+        this.secNav = secNav;
+    }
+
+    public String getPostShowTypes() {
+        return postShowTypes;
+    }
+
+    public void setPostShowTypes(String postShowTypes) {
+        this.postShowTypes = postShowTypes;
+    }
+
     public boolean isRoot() {
         return this.id == 1;
     }

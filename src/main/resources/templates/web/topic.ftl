@@ -34,11 +34,21 @@
 						<div class="list-title">
 							<a href="${basePath}/p/${post.id}">${post.title}</a>
 						</div>
-						<div class="pull-right"><span class="badge">${post.commentNumber}</span></div>
+						<div class="pull-right">
+                            <#if topicShowTypes?seq_contains(5)>
+                                <span class="badge">${post.commentNumber}</span>
+                            </#if>
+						</div>
 						<div class="post-bottom">
-							作者：<a href="/u/${post.userId}">${post.username}</a>
-							创建时间：${post.createTime}
-							最后回复时间：${post.updateTime}
+                            <#if topicShowTypes?seq_contains(2)>
+								<span>作者：<a href="/u/${post.userId}">${post.username}</a></span>
+                            </#if>
+                            <#if topicShowTypes?seq_contains(3)>
+								<span>创建时间：${post.createTime}</span>
+                            </#if>
+                            <#if topicShowTypes?seq_contains(4)>
+								<span>最后回复时间：${post.updateTime}</span>
+                            </#if>
 						</div>
 					</li>
                 </#list>
@@ -64,7 +74,7 @@
         </#if>
 	</div>
 	<div class="wrapper col-md-3">
-        <#if Session.sessionUser?? && topicId??>
+        <#if Session.sessionUser?? && topicId?? && posts??>
 			<div class="column">
 				<div class="text-center">
 					<button type="button" class="btn btn-default" onclick="topicPost(${topicId})">发表新话题</button>
