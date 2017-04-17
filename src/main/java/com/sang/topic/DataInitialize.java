@@ -60,6 +60,7 @@ public class DataInitialize implements InitializingBean {
 
             Topic blog = topicService.add("博客", t1.getId());
             blog.setSecNav(CommonConstants.SecNav.NONE);
+            blog.setOrderType(CommonConstants.OrderType.CREATE_TIME_FIRST);
             blog.setPostShowTypes(TopicStringUtils.integerToString(
                     CommonConstants.PostShowTypes.TITLE
                     ));
@@ -75,7 +76,7 @@ public class DataInitialize implements InitializingBean {
                 try {
                     Topic t = topicService.add(name, bbs.getId());
                     Random random = new Random(System.currentTimeMillis());
-                    int n = random.nextInt(6) + 1;
+                    int n = random.nextInt(4) + 1;
                     Post post = postService.add("文章标题["+t.getName()+"]","文章内容", t.getId(), adminUser);
                     for (int j = 1; j <= n + 18; j++) {
                         commentService.add("评论" + j, post.getId(), adminUser);

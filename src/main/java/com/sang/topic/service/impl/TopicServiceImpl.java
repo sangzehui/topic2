@@ -31,10 +31,12 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public void getWithPageType(Integer topicId, Page page, Map<String, Object> model) throws ResultException {
         Topic topic = topicRepository.findOne(topicId);
+        if(topic == null)
+            throw new ResultException(MessageConstants.TOPIC_NOT_FOUND, ResultConstants.NOT_FOUND);
         if(topic.getPageType() == CommonConstants.PageType.SHOW_CHILD_TOPIC){
             model.put("childTopics", this.getChildren(topicId));
         }else if(topic.getPageType() == CommonConstants.PageType.SHOW_POST){
-            if(topic.getSecNav() != CommonConstants.SecNav.NONE){
+            if(topic.getSecNav() == CommonConstants.SecNav.BROTHER){
                 model.put("nav2", this.getBrother(topicId));
             }
             model.put("topicShowTypes", TopicStringUtils.toIntegerList(topic.getPostShowTypes()));

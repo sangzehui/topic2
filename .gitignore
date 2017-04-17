@@ -26,3 +26,5 @@ rebel.xml
 
 # resource
 /src/main/webapp/resource/upload/photo
+
+application-prod.yml
